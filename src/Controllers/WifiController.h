@@ -1,0 +1,93 @@
+#pragma once
+
+#include <Interfaces/ITerminalView.h>
+#include <Interfaces/IInput.h>
+#include <Services/WifiService.h>
+#include <Services/WifiOpenScannerService.h>
+#include <Services/LittleFsService.h>
+#include <Services/NvsService.h>
+#include <Transformers/ArgTransformer.h>
+#include <Managers/UserInputManager.h>
+#include <Models/TerminalCommand.h>
+#include <States/GlobalState.h>
+#include <Preferences.h>
+
+class WifiController {
+public:
+    // Constructor
+    WifiController(ITerminalView& terminalView, IInput& terminalInput, WifiService& wifiService, WifiOpenScannerService& wifiOpenScannerService, LittleFsService& littleFsService, NvsService& nvsService, ArgTransformer& argTransformer, UserInputManager& userInputManager);
+
+    //  Entry point for Wi-Fi command
+    void handleCommand(const TerminalCommand& cmd);
+
+    // Ensure WiFi is configured before any action
+    void ensureConfigured();
+
+private:
+    GlobalState& state = GlobalState::getInstance();
+    bool configured = false;
+    Preferences preferences;
+
+    ITerminalView& terminalView;
+    IInput& terminalInput;
+    WifiService& wifiService;
+    WifiOpenScannerService& wifiOpenScannerService; 
+    LittleFsService& littleFsService;
+    NvsService& nvsService;
+    ArgTransformer& argTransformer;
+    UserInputManager& userInputManager;
+
+    // Handle connection to a Wi-Fi network
+    void handleConnect(const TerminalCommand& cmd);
+
+    // Handle disconnection from current Wi-Fi
+    void handleDisconnect(const TerminalCommand& cmd);
+
+    // Display current Wi-Fi status
+    void handleStatus(const TerminalCommand& cmd);
+
+    // Configure and start Access Point mode
+    void handleAp(const TerminalCommand& cmd);
+
+    // Spam random acccess point
+    void handleApSpam();
+
+    // Perform Wi-Fi network scan
+    void handleScan(const TerminalCommand& cmd);
+
+    // Start probing open networks for net access
+    void handleProbe();
+
+    // Start packet sniffing
+    void handleSniff(const TerminalCommand& cmd);
+
+    // Spoof Mac addr
+    void handleSpoof(const TerminalCommand& cmd);
+
+    // Deauthentication attack
+    void handleDeauth(const TerminalCommand& cmd);
+
+    // Routing traffic between STA and AP
+    void handleRepeater(const TerminalCommand& cmd);
+
+    // Flood a WiFi channel
+    void handleFlood(const TerminalCommand& cmd);
+
+    // Evil attack
+    void handleEvil(const TerminalCommand& cmd);
+
+    // Reset Wi-Fi configuration
+    void handleReset();
+
+    // Ask config for Wi-Fi
+    void handleConfig();
+
+    // Show help for Wi-Fi commands
+    void handleHelp();
+
+    // Handle handhake with the master
+    void handleHandshake();
+
+    // Handle exit command from master
+    void handleExit();
+};
