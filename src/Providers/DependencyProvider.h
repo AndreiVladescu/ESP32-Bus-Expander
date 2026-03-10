@@ -7,6 +7,15 @@ and injecting shared instances of core components
 */
 
 #include "Services/WifiService.h"
+#include "Services/WifiOpenScannerService.h"
+#include "Services/LittleFsService.h"
+#include "Services/NvsService.h"
+#include "Services/NmapService.h"
+#include "Services/ICMPService.h"
+#include "Services/HttpService.h"
+#include "Services/ModbusService.h"
+#include "Transformers/JsonTransformer.h"
+#include "Shells/ModbusShell.h"
 #include "Transformers/ArgTransformer.h"
 #include "Transformers/TerminalCommandTransformer.h"
 #include "Managers/UserInputManager.h"
@@ -51,11 +60,19 @@ private:
     WifiOpenScannerService wifiOpenScannerService;
     LittleFsService littleFsService;
     NvsService nvsService;
+    NmapService nmapService;
+    ICMPService icmpService;
+    HttpService httpService;
+    ModbusService modbusService;
 
+    // Shells
+    ModbusShell modbusShell;
+    
     // Controllers
     WifiController wifiController;
-
+    
     // Transformers
+    JsonTransformer jsonTransformer;
     ArgTransformer argTransformer;
     TerminalCommandTransformer commandTransformer;
 

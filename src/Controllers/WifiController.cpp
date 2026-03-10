@@ -3,30 +3,6 @@
 #include "Vendors/slave_unified_c5.h"
 
 /*
-Constructor with dependency injection
-*/
-WifiController::WifiController(
-    ITerminalView& terminalView,
-    IInput& terminalInput,
-    WifiService& wifiService,
-    WifiOpenScannerService& wifiOpenScannerService,
-    LittleFsService& littleFsService,
-    NvsService& nvsService,
-    ArgTransformer& argTransformer,
-    UserInputManager& userInputManager
-)
-    : terminalView(terminalView),
-      terminalInput(terminalInput),
-      wifiService(wifiService),
-      wifiOpenScannerService(wifiOpenScannerService),
-      littleFsService(littleFsService),
-      nvsService(nvsService),
-      argTransformer(argTransformer),
-      userInputManager(userInputManager)
-{
-}
-
-/*
 Entry point for command
 */
 void WifiController::handleCommand(const TerminalCommand &cmd)
@@ -45,8 +21,14 @@ void WifiController::handleCommand(const TerminalCommand &cmd)
     else if (root == "flood") handleFlood(cmd);
     else if (root == "repeater" || root == "extender") handleRepeater(cmd);  
     else if (root == "evil") handleEvil(cmd);
-    else if (root == "reset") handleReset();
     else if (root == "deauth") handleDeauth(cmd);
+    else if (root == "ping") handlePing(cmd);
+    else if (root == "nmap") handleNmap(cmd);
+    else if (root == "modbus") handleModbus(cmd);
+    else if (root == "http") handleHttp(cmd);
+    else if (root == "lookup") handleLookup(cmd);
+    else if (root == "discovery") handleDiscovery(cmd);
+    else if (root == "reset") handleReset();
     else if (root == "exit") handleExit(); // hidden command to signal master to exit
     else if (root == "handshake") handleHandshake(); // hidden command to signal detection
     else handleHelp();
@@ -755,15 +737,23 @@ void WifiController::handleHelp()
     terminalView.println("  disconnect                 Disconnect from current Wi-Fi");
     terminalView.println("  status                     Show C5 Wi-Fi status");
     terminalView.println("  scan                       Scan nearby 2.4GHz and 5GHz networks");
+    terminalView.println("  discovery                  Run network discovery commands");
+    terminalView.println("  probe                      Probe open networks for internet access");
     terminalView.println("  sniff                      Sniff 2.4GHz and 5GHz traffic");
+    terminalView.println("  evil                       Start active sniff/deauth/handshake capture mode");
     terminalView.println("  spam                       Start beacon spam on 5GHz channels");
     terminalView.println("  flood [channel]            Flood beacon frames on a channel");
     terminalView.println("  deauth [ssid]              Send 2.4GHz or 5GHz deauth to an AP");
-    terminalView.println("  probe                      Probe open networks for internet access");
     terminalView.println("  ap <ssid> <password>       Start access point");
-    terminalView.println("  repeater                   Extend WiFi by routing uplink and AP");
+    terminalView.println("  repeater                   Start or stop Wi-Fi repeater mode");
     terminalView.println("  spoof sta <mac>            Spoof station MAC address");
     terminalView.println("  spoof ap <mac>             Spoof access point MAC address");
+    terminalView.println("  ping <host>                Send ICMP ping to a host");
+    terminalView.println("  nmap <host> [-p port]      Scan ports on a host");
+    terminalView.println("  http get <url>             HTTP(s) GET request");
+    terminalView.println("  http analyze <url>         Get analysis report for a URL");
+    terminalView.println("  lookup mac|ip <host>       Run lookup utilities (IP, MAC, etc.)");
+    terminalView.println("  modbus <host> [port]       Open Modbus-related commands");
     terminalView.println("  reset                      Reset C5 Wi-Fi interface");
     terminalView.println("  exit                       Exit the C5 WiFi mode");
     terminalView.println("");

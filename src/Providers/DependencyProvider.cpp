@@ -11,17 +11,25 @@ DependencyProvider::DependencyProvider(ITerminalView& terminalView, IInput& term
       wifiOpenScannerService(),
       nvsService(),
       littleFsService(),
+      nmapService(),
+      icmpService(),
+      httpService(),
+      modbusService(),
+
+      // Shells
+      modbusShell(terminalView, terminalInput, argTransformer, userInputManager, modbusService),
 
       // Transformers
+      jsonTransformer(),
       argTransformer(),
+      commandTransformer(),
 
       // Managers
       commandHistoryManager(),
       userInputManager(terminalView, terminalInput, argTransformer),
 
       // Controllers
-      wifiController(terminalView, terminalInput, wifiService, wifiOpenScannerService, littleFsService, nvsService, argTransformer, userInputManager)
-
+      wifiController(terminalView, terminalInput, wifiService, wifiOpenScannerService, littleFsService, nvsService, argTransformer, userInputManager, nmapService, icmpService, httpService, jsonTransformer, modbusShell)
 {
 }
 

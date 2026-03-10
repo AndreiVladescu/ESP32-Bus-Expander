@@ -3,7 +3,8 @@ static const char* const autoCompleteWords[] = {
     // --- WIFI ---
     "connect", "probe", "deauth", "disconnect", "ap", "ap spam",
     "spam", "sniff", "scan", "exit", "flood", "repeater", "extender",
-    "reset", "spoof", "deauth", "status",
+    "reset", "spoof", "deauth", "status", "discovery", "evil", "nmap",
+    "http get", "http analyze", "lookup", "modbus", "ping",
 
     nullptr
 };

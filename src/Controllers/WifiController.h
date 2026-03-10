@@ -2,6 +2,7 @@
 
 #include <Interfaces/ITerminalView.h>
 #include <Interfaces/IInput.h>
+#include <Abstracts/ANetworkController.h>
 #include <Services/WifiService.h>
 #include <Services/WifiOpenScannerService.h>
 #include <Services/LittleFsService.h>
@@ -12,10 +13,9 @@
 #include <States/GlobalState.h>
 #include <Preferences.h>
 
-class WifiController {
+class WifiController : public ANetworkController {
 public:
-    // Constructor
-    WifiController(ITerminalView& terminalView, IInput& terminalInput, WifiService& wifiService, WifiOpenScannerService& wifiOpenScannerService, LittleFsService& littleFsService, NvsService& nvsService, ArgTransformer& argTransformer, UserInputManager& userInputManager);
+    using ANetworkController::ANetworkController;
 
     //  Entry point for Wi-Fi command
     void handleCommand(const TerminalCommand& cmd);
@@ -27,15 +27,6 @@ private:
     GlobalState& state = GlobalState::getInstance();
     bool configured = false;
     Preferences preferences;
-
-    ITerminalView& terminalView;
-    IInput& terminalInput;
-    WifiService& wifiService;
-    WifiOpenScannerService& wifiOpenScannerService; 
-    LittleFsService& littleFsService;
-    NvsService& nvsService;
-    ArgTransformer& argTransformer;
-    UserInputManager& userInputManager;
 
     // Handle connection to a Wi-Fi network
     void handleConnect(const TerminalCommand& cmd);
